@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    bool jumpKeywasPressed;
+    float horizontalInput;
     // Start is called before the first frame update
     void Start()
     {
@@ -11,13 +13,19 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
+    private float movement;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded==true)
         {
+            jumpKeywasPressed = true;
             GetComponent<Rigidbody>().AddForce(Vector3.up * 10, ForceMode.VelocityChange);
         }
+
+        horizontalInput = Input.GetAxis("Horizontal");
     }
+
+    // conditions to make jump | isGrounded
     bool isGrounded = false;
     private void OnCollisionEnter(Collision collision)
     {
@@ -35,6 +43,12 @@ public class Player : MonoBehaviour
             isGrounded = false;
             Debug.Log("0");
         }
+    }
+
+    // moevement left and right
+    private void FixedUpdate()
+    {
+        GetComponent<Rigidbody>().velocity = new Vector3(horizontalInput * 3, GetComponent<Rigidbody>().velocity.y, 0);
     }
 
 }
